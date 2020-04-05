@@ -84,7 +84,7 @@ if __name__ == "__main__":
     params = []
     param_name = False
     for param in sys.argv:
-        if param_name == False and param == "uniq.py":
+        if param_name is False and param == "uniq.py":
             param_name = True
             continue
         params.append(param)
