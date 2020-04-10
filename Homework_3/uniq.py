@@ -41,10 +41,15 @@ class Uniq(object):
     def attributes(self, value):
         self._attributes = value
 
+    def write_file(self, value):
+        with open(self.output_file, 'w') as f:
+            f.write(value)
+
     def do_uniq(self):
         print(self.content)
         res = ""
         if self.attributes.repeat and self.attributes.unique:
+            self.write_file(res)
             return res
         if self.attributes.count:
             if self.attributes.repeat:
@@ -70,8 +75,7 @@ class Uniq(object):
             else:
                 for key in self.content.keys():
                     res += key + "\n"
-        with open(self.output_file, 'w') as f:
-            f.write(res)
+        self.write_file(res)
         return res
 
 
