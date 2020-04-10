@@ -2,7 +2,6 @@
 # coding: utf-8
 
 import sys
-import re
 
 FILE_INPUT_NAME = 'src/input.txt'
 FILE_OUTPUT_NAME = 'src/output.txt'
@@ -47,7 +46,8 @@ class Uniq(object):
         out_text = ""
         i = 0
         last = False
-        if u is not None and d is not None:
+        if u is not None and\
+                d is not None:
             f.close()
             return
         for word in words:
@@ -55,8 +55,10 @@ class Uniq(object):
             if i == len(words):
                 last = True
             num = words[word]
-            if (d and num > 1) or (u and num == 1) or (u is None and d is None):
-                out_text = out_text + self.print_in_file(f, c, num, word, last) + "\n"
+            if (d and num > 1) or (u and num == 1) or\
+                    (u is None and d is None):
+                out_text = out_text +\
+                           self.print_in_file(f, c, num, word, last) + "\n"
                 continue
         f.close()
         return out_text
