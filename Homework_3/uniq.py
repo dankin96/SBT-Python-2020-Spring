@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import sys
+import re
 
 FILE_INPUT_NAME = 'src/input.txt'
 FILE_OUTPUT_NAME = 'src/output.txt'
@@ -15,6 +16,7 @@ class Uniq(object):
         words = dict()
         f = open(file, 'r')
         for lineS in f:
+            lineS = lineS.strip(" \t\n")
             if i is None:
                 line = lineS
             else:
@@ -26,30 +28,38 @@ class Uniq(object):
         f.close()
         return words
 
-    def print_in_file(self, f, c, num, word):
+    def print_in_file(self, f, c, num, word, last):
+        enter = ""
+        if not last:
+            enter = "\n"
+
+        out = ""
         if c:
-            f.write(str(num) + " " + word)
+            out = str(num) + " " + word
+            f.write(str(num) + " " + word + enter)
         else:
-            f.write(word)
-        return
+            out = word
+            f.write(word + enter)
+        return out
 
     def print_word(self, file, words, c, d, u):
         f = open(file, 'w')
+        out_text = ""
+        i = 0
+        last = False
         if u is not None and d is not None:
             f.close()
             return
         for word in words:
+            i += 1
+            if i == len(words):
+                last = True
             num = words[word]
-            if d and num > 1:
-                self.print_in_file(f, c, num, word)
+            if (d and num > 1) or (u and num == 1) or (u is None and d is None):
+                out_text = out_text + self.print_in_file(f, c, num, word, last) + "\n"
                 continue
-            if u and num == 1:
-                self.print_in_file(f, c, num, word)
-                continue
-            if u is None and d is None:
-                self.print_in_file(f, c, num, word)
         f.close()
-        return
+        return out_text
 
     def recognize_params(self, parameters):
         c = None
@@ -70,14 +80,18 @@ class Uniq(object):
             if parameter == "-u":
                 u = True
                 continue
+            print(parameter)
             error = True
         return c, d, i, u, error
 
     def uniq(self, input_file, output_file, parameters):
         c, d, i, u, error = self.recognize_params(parameters)
+        if error:
+            print("Error arguments")
+            return ""
         words = self.word_count(input_file, i)
-        self.print_word(output_file, words, c, d, u)
-        return
+        out = self.print_word(output_file, words, c, d, u)
+        return out
 
 
 if __name__ == "__main__":
@@ -88,5 +102,5 @@ if __name__ == "__main__":
             param_name = True
             continue
         params.append(param)
-    hm = Uniq()
-    hm.uniq(FILE_INPUT_NAME, FILE_OUTPUT_NAME, params)
+    uniq = Uniq()
+    uniq.uniq(FILE_INPUT_NAME, FILE_OUTPUT_NAME, params)
