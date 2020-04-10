@@ -6,10 +6,10 @@ FILE_OUTPUT_NAME = 'src/output.txt'
 
 class Uniq(object):
 
-    def __init__(self, input_file, output_file, attributes):
+    def __init__(self, input_file, output_file):
         self.input_file = input_file
         self.output_file = output_file
-        self._attributes = attributes
+        self._attributes = self.args()
         self.content = input_file
 
     @property
@@ -44,6 +44,26 @@ class Uniq(object):
     def write_file(self, value):
         with open(self.output_file, 'w') as f:
             f.write(value)
+
+    def args(self):
+        my_parser = argparse.ArgumentParser()
+        my_parser.add_argument("-c",
+                               "--count",
+                               help="выводить число повторов в начале строки",
+                               action="store_true")
+        my_parser.add_argument("-d",
+                               "--repeat",
+                               help="выводить только повторяющиеся строки",
+                               action="store_true")
+        my_parser.add_argument("-i",
+                               "--ignore-case",
+                               help="игнорировать регистр при сравнении",
+                               action="store_true")
+        my_parser.add_argument("-u",
+                               "--unique",
+                               help="выводить только неповторяющиеся строки",
+                               action="store_true")
+        return my_parser.parse_args()
 
     def do_uniq(self):
         print(self.content)
@@ -80,24 +100,6 @@ class Uniq(object):
 
 
 if __name__ == "__main__":
-    my_parser = argparse.ArgumentParser()
-    my_parser.add_argument("-c",
-                           "--count",
-                           help="выводить число повторов в начале строки",
-                           action="store_true")
-    my_parser.add_argument("-d",
-                           "--repeat",
-                           help="выводить только повторяющиеся строки",
-                           action="store_true")
-    my_parser.add_argument("-i",
-                           "--ignore-case",
-                           help="игнорировать регистр при сравнении",
-                           action="store_true")
-    my_parser.add_argument("-u",
-                           "--unique",
-                           help="выводить только неповторяющиеся строки",
-                           action="store_true")
-    args = my_parser.parse_args()
-    result = Uniq(FILE_INPUT_NAME, FILE_OUTPUT_NAME, args).do_uniq()
+    result = Uniq(FILE_INPUT_NAME, FILE_OUTPUT_NAME).do_uniq()
     print("Result: ")
     print(result)
