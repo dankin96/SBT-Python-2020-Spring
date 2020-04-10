@@ -81,10 +81,22 @@ class Uniq(object):
 
 if __name__ == "__main__":
     my_parser = argparse.ArgumentParser()
-    my_parser.add_argument("-c", "--count", help="выводить число повторов в начале каждой строки", action="store_true")
-    my_parser.add_argument("-d", "--repeat", help="выводить только повторяющиеся строки", action="store_true")
-    my_parser.add_argument("-i", "--ignore-case", help="игнорировать регистр при сравнении", action="store_true")
-    my_parser.add_argument("-u", "--unique", help="выводить только неповторяющиеся строки", action="store_true")
+    my_parser.add_argument("-c",
+                           "--count",
+                           help="выводить число повторов в начале строки",
+                           action="store_true")
+    my_parser.add_argument("-d",
+                           "--repeat",
+                           help="выводить только повторяющиеся строки",
+                           action="store_true")
+    my_parser.add_argument("-i",
+                           "--ignore-case",
+                           help="игнорировать регистр при сравнении",
+                           action="store_true")
+    my_parser.add_argument("-u",
+                           "--unique",
+                           help="выводить только неповторяющиеся строки",
+                           action="store_true")
     args = my_parser.parse_args()
     result = Uniq(FILE_INPUT_NAME, FILE_OUTPUT_NAME, args).do_uniq()
     print("Result: ")
