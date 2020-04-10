@@ -1,6 +1,6 @@
 import argparse
 
-FILE_INPUT_NAME = 'src/input_1.txt'
+FILE_INPUT_NAME = 'src/input_3.txt'
 FILE_OUTPUT_NAME = 'src/output.txt'
 
 
@@ -22,10 +22,16 @@ class Uniq(object):
         with open(value) as f:
             for line in f:
                 line = line.replace("\n", "")
-                if line in self.content:
-                    self._content[line] += 1
+                if self.attributes.ignore_case:
+                    if line.lower() in self.content:
+                        self._content[line.lower()] += 1
+                    else:
+                        self._content[line.lower()] = 1
                 else:
-                    self._content[line] = 1
+                    if line in self.content:
+                        self._content[line] += 1
+                    else:
+                        self._content[line] = 1
 
     @property
     def attributes(self):
@@ -50,7 +56,8 @@ class Uniq(object):
                     if self.content[key] == 1:
                         res += str(self.content[key]) + " " + key + "\n"
             else:
-                res = self.content
+                for key, value in self.content.items():
+                    res += str(value) + " " + key + "\n"
         else:
             if self.attributes.repeat:
                 for key in self.content:
@@ -61,7 +68,10 @@ class Uniq(object):
                     if self.content[key] == 1:
                         res += key + "\n"
             else:
-                res = self.content.keys()
+                for key in self.content.keys():
+                    res += key + "\n"
+        with open(self.output_file, 'w') as f:
+            f.write(res)
         return res
 
 
