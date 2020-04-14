@@ -32,6 +32,30 @@ class MyTestCase(unittest.TestCase):
         self.uniq.unique()
         self.assertEqual({'1': 1}, self.uniq.strings_dict)
 
+    def test_unique_repeat_not_ignore_case(self):
+        self.uniq.read(False, self.uniq.input_file)
+        self.uniq.unique()
+        self.uniq.repeat()
+        self.assertEqual({}, self.uniq.strings_dict)
+
+    def test_unique_repeat_ignore_case(self):
+        self.uniq.read(True, self.uniq.input_file)
+        self.uniq.unique()
+        self.uniq.repeat()
+        self.assertEqual({}, self.uniq.strings_dict)
+
+    def test_repeat_unique_not_ignore_case(self):
+        self.uniq.read(False, self.uniq.input_file)
+        self.uniq.repeat()
+        self.uniq.unique()
+        self.assertEqual({}, self.uniq.strings_dict)
+
+    def test_repeat_unique_ignore_case(self):
+        self.uniq.read(True, self.uniq.input_file)
+        self.uniq.repeat()
+        self.uniq.unique()
+        self.assertEqual({}, self.uniq.strings_dict)
+
     def test_output_file_count_ignore_case(self):
         strings = []
         self.uniq.read(True, self.uniq.input_file)
