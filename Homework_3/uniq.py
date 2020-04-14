@@ -18,10 +18,14 @@ class Uniq(object):
     def configure_argparser():
         parser = argparse.ArgumentParser()
         parser.add_argument("-c", "--count", action='store_true',
-                            help="print the number of repetitions at the beginning of each line")
-        parser.add_argument("-d", "--repeat", action='store_true', help="print only repeated lines")
-        parser.add_argument("-i", "--ignore_case", action='store_true', help="ignore case during comparing")
-        parser.add_argument("-u", "--unique", action='store_true', help="print only non-repeating lines")
+                            help="print the number of repetitions at "
+                                 "the beginning of each line")
+        parser.add_argument("-d", "--repeat", action='store_true',
+                            help="print only repeated lines")
+        parser.add_argument("-i", "--ignore_case", action='store_true',
+                            help="ignore case during comparing")
+        parser.add_argument("-u", "--unique", action='store_true',
+                            help="print only non-repeating lines")
         return parser.parse_args()
 
     def read(self, ignore_case, filename):
@@ -52,7 +56,8 @@ class Uniq(object):
         file = open(filename, 'w')
         if count:
             for string in self.strings_dict:
-                file.write(str(self.strings_dict[string]) + " " + string + '\n')
+                file.write(str(self.strings_dict[string]) +
+                           " " + string + '\n')
         else:
             for string in self.strings_dict:
                 file.write(string + '\n')

@@ -5,6 +5,7 @@ from Homework_3.uniq import Uniq
 FILE_INPUT_NAME = 'src/input_3.txt'
 FILE_OUTPUT_NAME = 'src/output_3_my.txt'
 
+
 class MyTestCase(unittest.TestCase):
     def setUp(self):
         self.uniq = Uniq(FILE_INPUT_NAME, FILE_OUTPUT_NAME)
@@ -17,12 +18,14 @@ class MyTestCase(unittest.TestCase):
     def test_repeat_ignore_case(self):
         self.uniq.read(True, self.uniq.input_file)
         self.uniq.repeat()
-        self.assertEqual({'ab': 4, 'a': 2, 'abc': 2, 'a3': 2}, self.uniq.strings_dict)
+        self.assertEqual({'ab': 4, 'a': 2, 'abc': 2, 'a3': 2},
+                         self.uniq.strings_dict)
 
     def test_unique_not_ignore_case(self):
         self.uniq.read(False, self.uniq.input_file)
         self.uniq.unique()
-        self.assertEqual({'AB': 1, 'a': 1, 'A': 1, 'A3': 1, 'a3': 1, '1': 1}, self.uniq.strings_dict)
+        self.assertEqual({'AB': 1, 'a': 1, 'A': 1, 'A3': 1, 'a3': 1, '1': 1},
+                         self.uniq.strings_dict)
 
     def test_unique_ignore_case(self):
         self.uniq.read(True, self.uniq.input_file)
