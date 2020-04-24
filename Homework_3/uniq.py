@@ -6,10 +6,23 @@ FILE_OUTPUT_NAME = 'src/output.txt'
 
 
 class Uniq:
-    def __init__(self, input_path, output_path, args):
+    def __init__(self, input_path, output_path):
         self.input_path = input_path
         self.output_path = output_path
-        self._args = args
+        self._args = self._parse_args()
+
+    @staticmethod
+    def _parse_args():
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-c", "--count", action="store_true",
+                            help="print counts for each line")
+        parser.add_argument("-d", "--repeat", action="store_true",
+                            help="write only repeated lines")
+        parser.add_argument("-i", "--ignore-case", action="store_true",
+                            help="ignore case when comparing")
+        parser.add_argument("-u", "--unique", action="store_true",
+                            help="write only unique lines")
+        return parser.parse_args()
 
     def _read_lines(self):
         try:
@@ -89,21 +102,5 @@ class Uniq:
         self._write_output(output_lines)
 
 
-class UniqArgumentParser:
-    @classmethod
-    def parse_args(cls):
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-c", "--count", action="store_true",
-                            help="print counts for each line")
-        parser.add_argument("-d", "--repeat", action="store_true",
-                            help="write only repeated lines")
-        parser.add_argument("-i", "--ignore-case", action="store_true",
-                            help="ignore case when comparing")
-        parser.add_argument("-u", "--unique", action="store_true",
-                            help="write only unique lines")
-        return parser.parse_args()
-
-
 if __name__ == "__main__":
-    Uniq(FILE_INPUT_NAME, FILE_OUTPUT_NAME, UniqArgumentParser.parse_args()) \
-        .run()
+    Uniq(FILE_INPUT_NAME, FILE_OUTPUT_NAME).run()

@@ -1,72 +1,51 @@
-from argparse import Namespace
-from copy import copy
+from unittest.mock import patch
 from uniq import Uniq
 import os
 
-default_args = Namespace(
-    count=False,
-    repeat=False,
-    ignore_case=False,
-    unique=False
-)
-
 
 def test_empty_output_on_empty_input():
-    run_test(inp('empty'), outp('empty'), default_args)
+    run_test(inp('empty'), outp('empty'))
 
 
 def test_empty_output_on_controversial_args():
-    args = copy(default_args)
-    args.repeat = True
-    args.unique = True
-    run_test(inp('simple'), outp('empty'), args)
+    run_test(inp('simple'), outp('empty'), ['-d', '-u'])
 
 
 def test_no_duplicates():
-    run_test(inp('simple'), outp('simple'), default_args)
+    run_test(inp('simple'), outp('simple'))
 
 
 def test_with_count():
-    args = copy(default_args)
-    args.count = True
-    run_test(inp('simple'), outp('simple_with_count'), args)
+    run_test(inp('simple'), outp('simple_with_count'), ['-c'])
 
 
 def test_lowercase():
-    args = copy(default_args)
-    args.ignore_case = True
-    run_test(inp('lowercase'), outp('lowercase'), args)
+    run_test(inp('lowercase'), outp('lowercase'), ['-i'])
 
 
 def test_repeat():
-    args = copy(default_args)
-    args.repeat = True
-    run_test(inp('simple'), outp('repeat'), args)
+    run_test(inp('simple'), outp('repeat'), ['-d'])
 
 
 def test_empty_output_with_repeat_true_and_no_repeated_in_input():
-    args = copy(default_args)
-    args.repeat = True
-    run_test(inp("no_repeated"), outp('empty'), args)
+    run_test(inp("no_repeated"), outp('empty'), ['-d'])
 
 
 def test_unique():
-    args = copy(default_args)
-    args.unique = True
-    run_test(inp('simple'), outp('unique'), args)
+    run_test(inp('simple'), outp('unique'), ['-u'])
 
 
 def test_empty_output_with_unique_true_and_no_unique_in_input():
-    args = copy(default_args)
-    args.unique = True
-    run_test(inp("no_unique"), outp('empty'), args)
+    run_test(inp("no_unique"), outp('empty'), ['-u'])
 
 
-def run_test(input_path, output_path, args):
+def run_test(input_path, output_path, args=None):
     tmp_dir = "./tmp.txt"
+    args = [''] + args if args is not None else ['']
 
     try:
-        Uniq(input_path, tmp_dir, args).run()
+        with patch('sys.argv', args):
+            Uniq(input_path, tmp_dir).run()
 
         with open(output_path, 'r') as f:
             expected = [line.rstrip() for line in f.readlines()]
