@@ -1,4 +1,4 @@
-jupyterlab==2.0.1
+jupyterlab==2.2.10
 Flask==1.1.1
 requests==2.23.0
 beautifulsoup4==4.4.0
